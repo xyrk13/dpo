@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>dickpics.online</title>
+    <title>Image Gallery</title>
     <style>
         body {
             margin: 0;
@@ -39,26 +39,23 @@
     <script>
         const gallery = document.getElementById('gallery');
         const loading = document.getElementById('loading');
-        let after = null; // For pagination
+        let after = null;
         let isLoading = false;
-        const subreddit = "GaybrosGoneWild"; // Replace with your desired subreddit
-        const searchTerm = "Dick"; // Replace with your desired search term
+        const subreddit = "gonewild";
+        const searchTerm = "dick pic";
 
         async function fetchImages() {
             if (isLoading) return;
             isLoading = true;
             loading.style.display = 'block';
 
-            let url = `https://www.reddit.com/r/${subreddit}/search.json?q=${searchTerm}+pic&restrict_sr=1&raw_json=1&limit=10`;
-            if (after) {
-                url += `&after=${after}`;
-            }
+            let url = `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://www.reddit.com/r/${subreddit}/search.json?q=${searchTerm}+pic&restrict_sr=1&raw_json=1&limit=10${after ? `&after=${after}` : ''}`)}`;
 
             try {
                 const response = await fetch(url);
                 const data = await response.json();
                 const posts = data.data.children;
-                after = data.data.after; // Update after for next page
+                after = data.data.after;
 
                 if (!posts || posts.length === 0) {
                     loading.textContent = "No more images to load.";
@@ -88,9 +85,8 @@
             }
         }
 
-        fetchImages(); // Initial load
+        fetchImages();
         window.addEventListener('scroll', handleScroll);
-
     </script>
 
 </body>
